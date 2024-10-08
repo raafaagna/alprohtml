@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload and Display CSV</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 20px;
+            background: linear-gradient(to right, #9bb8ed, #a39fe1);
+            color: #ffff;
+            text-align: center;
+        }
+
+        h1 {
+            color: #ffff;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 90%;
+            margin: 20px auto;
+            padding: 50px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        input[type="file"], select {
+            margin-bottom: 10px;
+            background-color: #ffff;
+            color: #9bb8ed;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .search-container {
+            margin-top: 20px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid white;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        th {
+            background-color: rgb(146, 127, 243);
+            color: white;
+            cursor: pointer; /* Menunjukkan bahwa header bisa diklik */
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        footer{
+            padding: 3px;
+        }
+
+        .pagination {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload CSV File</h1>
+        <p>Created by: Raafa Agna Rasyada</p>
+        <input type="file" id="fileInput" accept=".csv">
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search..." onkeyup="searchTable()">
+        </div>
+
+        <div>
+            <label for="entriesPerPage">Entries per page:</label>
+            <select id="entriesPerPage" onchange="updateEntriesPerPage()">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+        
+        <div class="table-container" id="tableContainer">
+            <!-- Tabel akan ditampilkan di sini -->
+        </div>
+
+        <div class="pagination" id="paginationContainer"></div>
+    </div>
+
+    <footer>
+        <p>09 October 2024<br>
+        <a href="mail to:raafa.agna@gmail.com">raafa.agna@gmail.com</a></p>
+    </footer>
+
+    <script>
+        let csvData = [];
+        let currentPage = 1;
+        let entriesPerPage = 10;
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.readAsText(file);
+                reader.onload = function(e) {
+                    const data = e.target.result;
+                    csvData = parseCSV(data);
+                    displayTable(csvData);
+                };
+
+                reader.onerror = function() {
+                    console.error("Error reading file");
+                };
+            }
+        });
+
+        function parseCSV(data) {
+            return data.split('\n').map(row => row.split(',').map(cell => cell.trim()));
+        }
+
+        function displayTable(data) {
+            const tableContainer = document.getElementById('tableContainer');
+            let table = '<table>';
+
+            // Header
+            table += '<tr>';
+            data[0].forEach((cell, index) => {
+                table += `<th onclick="sortTable(${index})">${cell}</th>`;
+            });
+            table += '</tr>';
+
+            // Data untuk halaman saat ini
+            const startIndex = (currentPage - 1) * entriesPerPage + 1;
+            const endIndex = Math.min(startIndex + entriesPerPage - 1, data.length - 1);
+            
+            for (let i = startIndex; i <= endIndex; i++) {
+                table += '<tr>';
+                data[i].forEach(cell => {
+                    table += `<td>${cell}</td>`;
+                });
+                table += '</tr>';
+            }
+
+            table += '</table>';
+            tableContainer.innerHTML = table;
+            updatePagination(data.length);
+        }
+
+        function sortTable(index) {
+            csvData.sort((a, b) => {
+                return a[index].localeCompare(b[index]);
+            });
+            displayTable(csvData); // Menampilkan tabel dengan header
+        }
+
+        function searchTable() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const filteredData = csvData.filter((row, index) => {
+                if (index === 0) return true; // Selalu tampilkan header
+                return row.some(cell => cell.toLowerCase().includes(input));
+            });
+            currentPage = 1; // Reset halaman saat mencari
+            displayTable(filteredData);
+        }
+
+        function updateEntriesPerPage() {
+            entriesPerPage = parseInt(document.getElementById('entriesPerPage').value);
+            currentPage = 1; // Reset halaman saat mengubah jumlah entri per halaman
+            displayTable(csvData);
+        }
+
+        function updatePagination(totalEntries) {
+            const paginationContainer = document.getElementById('paginationContainer');
+            const totalPages = Math.ceil(totalEntries / entriesPerPage);
+            let paginationHtml = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHtml += `<button onclick="changePage(${i})">${i}</button>`;
+            }
+
+            paginationContainer.innerHTML = paginationHtml;
+        }
+
+        function changePage(pageNumber) {
+            currentPage = pageNumber;
+            displayTable(csvData);
+        }
+    </script>
+</body>
+</html>

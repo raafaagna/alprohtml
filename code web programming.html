@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload and Display CSV</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload CSV and Display Data</h2>
+
+    <!-- Input file -->
+    <input type="file" id="fileInput" accept=".csv">
+
+    <!-- Area untuk menampilkan tabel -->
+    <div id="tableContainer"></div>
+
+    <!-- Script JavaScript -->
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                // Membaca file sebagai teks
+                reader.readAsText(file);
+
+                // Ketika file sudah dibaca
+                reader.onload = function(e) {
+                    const csvData = e.target.result;
+                    displayTable(csvData);
+                };
+
+                reader.onerror = function() {
+                    console.error("Error reading file");
+                };
+            }
+        });
+
+        function displayTable(csvData) {
+            const rows = csvData.split('\n');  // Memisahkan baris dari data CSV
+            let table = '<table>';
+
+            // Iterasi setiap baris untuk mengisi tabel
+            rows.forEach((row, rowIndex) => {
+                const cells = row.split(',');  // Memisahkan setiap sel dengan koma
+                table += '<tr>';
+
+                // Buat header jika baris pertama
+                if (rowIndex === 0) {
+                    cells.forEach(cell => {
+                        table += `<th>${cell.trim()}</th>`;  // Menambahkan header tabel
+                    });
+                } else {
+                    cells.forEach(cell => {
+                        table += `<td>${cell.trim()}</td>`;  // Menambahkan data sel
+                    });
+                }
+
+                table += '</tr>';
+            });
+
+            table += '</table>';
+
+            // Tampilkan tabel di dalam div dengan id 'tableContainer'
+            document.getElementById('tableContainer').innerHTML = table;
+        }
+    </script>
+</body>
+</html>

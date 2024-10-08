@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweaty Bunny</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #1f1f1f;
+            color: #ffffff;
+        }
+
+        header {
+            background-color: #222;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav h1 {
+            font-size: 3em;
+            color: #ffb6c1;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #ffb6c1;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+        .hero-section {
+            background-color: #333;
+            color: #ffffff;
+            text-align: center;
+            padding: 60px;
+        }
+
+        .hero-section h2 {
+            font-size: 3em;
+        }
+
+        .hero-section button {
+            padding: 10px 20px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+        .statistics {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            background-color: #444;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5em;
+            color: #ffb6c1;
+        }
+
+        .stat-item p {
+            font-size: 1.2em;
+        }
+
+        .about-section, .products-section, .footer-section {
+            padding: 50px;
+            text-align: center;
+            background-color: #222;
+            margin: 20px auto;
+        }
+
+        .product-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .product-card {
+            border: 2px solid #ffb6c1;
+            padding: 20px;
+            width: 200px;
+            background-color: #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .product-card p {
+            margin: 10px 0;
+        }
+
+        .product-card button {
+            padding: 10px 15px;
+            background-color: #ff69b4;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: #111;
+            color: white;
+            padding: 20px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>Sweaty Bunny</h1>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#products">Our Products</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero-section">
+        <h2>Stylish & Cozy Knitwear</h2>
+        <p>Discover our latest collection of handmade knitwear!</p>
+        <button onclick="scrollToSection('products')">Shop Now</button>
+        <div class="statistics">
+            <div class="stat-item">
+                <h3>100+</h3>
+                <p>Jenis Produk</p>
+            </div>
+            <div class="stat-item">
+                <h3>2000+</h3>
+                <p>Produk Terjual</p>
+            </div>
+            <div class="stat-item">
+                <h3>500+</h3>
+                <p>Konsumen</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <h2>About Us</h2>
+        <p>Sweaty Bunny is committed to creating high-quality knitwear with cute designs that fit every style and occasion.</p>
+    </section>
+
+    <section id="products" class="products-section">
+        <h2>Our Products</h2>
+        <div class="product-gallery">
+            <div class="product-card">
+                <img src="https://i.pinimg.com/564x/25/17/ae/2517aeebf3b5efdcac6f76d67e1a3996.jpg" alt="Cute Knit Hat">
+                <p>Cute Knit Hat</p>
+                <p>Rp. 150.000</p>
+                <button>Beli Sekarang</button>
+            </div>
+            <div class="product-card">
+                <img src="https://i.pinimg.com/564x/6a/73/41/6a7341d7fe056b88962bff0eb35e41ef.jpg" alt="Cozy Knit Scarf">
+                <p>Cozy Knit Scarf</p>
+                <p>Rp. 120.000</p>
+                <button>Beli Sekarang</button>
+            </div>
+            <div class="product-card">
+                <img src="https://i.pinimg.com/564x/5e/07/af/5e07af9a50bb1103e898284c2b416d47.jpg" alt="Handmade Sweater">
+                <p>Handmade Sweater</p>
+                <p>Rp. 250.000</p>
+                <button>Beli Sekarang</button>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="footer-section">
+        <h2>Contact Us</h2>
+        <p>Email: info@sweatybunny.com</p>
+        <p>Phone: +62 812 3456 7890</p>
+    </footer>
+
+    <script>
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
